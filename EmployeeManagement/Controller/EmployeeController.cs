@@ -1,48 +1,63 @@
 using Microsoft.AspNetCore.Mvc;
-using CsvHelper;
-using CsvHelper.Configuration;
-using System.Globalization;
+using Microsoft.EntityFrameworkCore;
+using EmployeeManagement.Data;
+using EmployeeManagement.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace EmployeeManagement.Controllers
 {
     public class EmployeeController : Controller
     {
-        public IActionResult Index()
+        private readonly EmployeeContext _context;
+
+        public EmployeeController(EmployeeContext context)
         {
-            var employees = GetEmployees();
-            return View(employees);
+            _context = context;
         }
 
-        private List<Employee> GetEmployees()
+        // GET: Employee
+        public async Task<IActionResult> Index(string? nameFilter)
         {
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Data/DataBase.csv");
-            using var reader = new StreamReader(filePath);
-            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            var employees = _context.Employees.AsQueryable();
+
+            if (!string.IsNullOrEmpty(nameFilter))
             {
-                HeaderValidated = null,
-                MissingFieldFound = null
-            };
-            using var csv = new CsvReader(reader, config);
+                employees = employees.Where(e => e.Name.Contains(nameFilter));
+            }
 
-            var records = csv.GetRecords<Employee>().ToList();
-            return records;
+            var sortedEmployees = await employees
+                .OrderBy(e => e.BornDate)
+                .ToListAsync();
+
+            return View(sortedEmployees);
         }
-    }
 
-    public class Employee
-    {
-        public int Id { get; set; }
-        public string? Name { get; set; }
-        public string? LastName { get; set; }
-        public string? RFC { get; set; }
-        public DateTime BornDate { get; set; }
-        public EmployeeStatus Status { get; set; }
-    }
+        // GET: Employee/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
 
-    public enum EmployeeStatus
-    {
-        NotSet,
-        Active,
-        Inactive
+        // POST: Employee/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("RFC,Name,LastName,BornDate,Status")] Employee employee)
+        {
+            if (ModelState.IsValid)
+            {
+                if (await _context.Employees.AnyAsync(e => e.RFC == employee.RFC))
+                {
+                    ModelState.AddModelError(nameof(employee.RFC), "An employee with this RFC already exists.");
+                    return View(employee);
+                }
+
+                _context.Add(employee);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(employee);
+        }
     }
 }

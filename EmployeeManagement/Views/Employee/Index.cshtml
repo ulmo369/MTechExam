@@ -1,4 +1,9 @@
-@model IEnumerable<EmployeeManagement.Controllers.Employee>
+@using Azure.Core
+@model IEnumerable<EmployeeManagement.Models.Employee>
+
+@{
+    var nameFilter = Context.Request.Query["nameFilter"];
+}
 
 <!DOCTYPE html>
 <html>
@@ -7,6 +12,12 @@
 </head>
 <body>
     <h1>Employee List</h1>
+
+    <form method="get">
+        <input type="text" name="nameFilter" placeholder="Filter by Name" value="@nameFilter" />
+        <button type="submit">Filter</button>
+    </form>
+
     <table>
         <thead>
             <tr>
@@ -32,5 +43,7 @@
             }
         </tbody>
     </table>
+
+    <a href="/Employee/Create">Create New Employee</a>
 </body>
 </html>
