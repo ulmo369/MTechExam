@@ -1,11 +1,39 @@
 {
   "Version": 1,
-  "Hash": "G+z3ZfXhBJ7hrJHVOsMU+9HGbAyafvuBZohmMhrCsdc=",
+  "Hash": "ks3T/Z1IltOjffR38exp1DqgkIKw61L0n+5LEMbH2Bk=",
   "Source": "EmployeeManagement",
   "BasePath": "_content/EmployeeManagement",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "EmployeeManagement\\wwwroot",
+      "Source": "EmployeeManagement",
+      "ContentRoot": "C:\\Users\\e1000\\OneDrive\\Documents\\WORK\\Aplications\\MTech\\MTechExam\\EmployeeManagement\\wwwroot\\",
+      "BasePath": "_content/EmployeeManagement",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\e1000\\OneDrive\\Documents\\WORK\\Aplications\\MTech\\MTechExam\\EmployeeManagement\\wwwroot\\css\\site.css",
+      "SourceId": "EmployeeManagement",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\e1000\\OneDrive\\Documents\\WORK\\Aplications\\MTech\\MTechExam\\EmployeeManagement\\wwwroot\\",
+      "BasePath": "_content/EmployeeManagement",
+      "RelativePath": "css/site.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\site.css"
+    }
+  ]
 }

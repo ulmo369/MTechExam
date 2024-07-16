@@ -44,9 +44,6 @@ namespace EmployeeManagement.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RFC")
-                        .IsUnique();
-
                     b.ToTable("Employees");
                 });
 #pragma warning restore 612, 618

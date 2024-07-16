@@ -1,5 +1,5 @@
-using Microsoft.EntityFrameworkCore;
 using EmployeeManagement.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeManagement.Data
 {
@@ -11,12 +11,5 @@ namespace EmployeeManagement.Data
         }
 
         public DbSet<Employee> Employees { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Employee>()
-                .HasIndex(e => e.RFC)
-                .IsUnique();
-        }
     }
 }

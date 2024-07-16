@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmployeeManagement.Migrations
 {
     [DbContext(typeof(EmployeeContext))]
-    [Migration("20240716060136_InitialCreate")]
+    [Migration("20240716081357_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -46,9 +46,6 @@ namespace EmployeeManagement.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RFC")
-                        .IsUnique();
 
                     b.ToTable("Employees");
                 });

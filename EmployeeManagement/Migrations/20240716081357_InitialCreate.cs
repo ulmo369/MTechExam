@@ -27,12 +27,6 @@ namespace EmployeeManagement.Migrations
                 {
                     table.PrimaryKey("PK_Employees", x => x.Id);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Employees_RFC",
-                table: "Employees",
-                column: "RFC",
-                unique: true);
         }
 
         /// <inheritdoc />

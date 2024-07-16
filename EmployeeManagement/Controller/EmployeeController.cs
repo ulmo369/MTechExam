@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EmployeeManagement.Data;
 using EmployeeManagement.Models;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,7 +23,7 @@ namespace EmployeeManagement.Controllers
 
             if (!string.IsNullOrEmpty(nameFilter))
             {
-                employees = employees.Where(e => e.Name.Contains(nameFilter));
+                employees = employees.Where(e => e.Name != null && e.Name.Contains(nameFilter));
             }
 
             var sortedEmployees = await employees
@@ -45,19 +44,20 @@ namespace EmployeeManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("RFC,Name,LastName,BornDate,Status")] Employee employee)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                if (await _context.Employees.AnyAsync(e => e.RFC == employee.RFC))
-                {
-                    ModelState.AddModelError(nameof(employee.RFC), "An employee with this RFC already exists.");
-                    return View(employee);
-                }
-
-                _context.Add(employee);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View(employee);
             }
-            return View(employee);
+
+            if (await _context.Employees.AnyAsync(e => e.RFC == employee.RFC))
+            {
+                ModelState.AddModelError(nameof(employee.RFC), "An employee with this RFC already exists.");
+                return View(employee);
+            }
+
+            _context.Add(employee);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
     }
 }
