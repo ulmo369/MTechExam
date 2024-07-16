@@ -24,7 +24,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles(); // Ensure static files are served
+app.UseStaticFiles();
 
 app.UseRouting();
 

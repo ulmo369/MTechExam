@@ -1,0 +1,95 @@
+@page
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome</title>
+</head>
+<body>
+    <h1>EXPLANATION!</h1>
+    <p>My name is Diego Emilio Barrera Hernandez and this is my solution to the project.</p>
+    <br><br>
+    <p>This are the paths of the project.</p>
+    <ol>
+        <li>
+            <a href="/Employee">Employee List</a>
+        </li>
+        <li>
+            <a href="/Employee/Create">Create New Employee</a>
+        </li>
+    <br><br>
+    <ol>
+        <li>
+            Validation of RFC format is done from the model with this configuration:
+            <pre>
+            [Required]
+            [StringLength(13, MinimumLength = 13)]
+            [RegularExpression("^[A-Z]{3}\d{6}[A-Z]{3}$", ErrorMessage = "Invalid RFC format.")]
+            public string? RFC { get; set; }
+            </pre>
+        </li>
+        <br><br>
+        <li>
+            Uniqueness is handled in the controller with this configuration:
+            <pre>
+            // POST: Employee/Create
+            [HttpPost]
+            [ValidateAntiForgeryToken]
+            public async Task<IActionResult> Create([Bind("RFC,Name,LastName,BornDate,Status")] Employee employee)
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(employee);
+                }
+
+                if (await _context.Employees.AnyAsync(e => e.RFC == employee.RFC))
+                {
+                    ModelState.AddModelError(nameof(employee.RFC), "An employee with this RFC already exists.");
+                    return View(employee);
+                }
+
+                _context.Add(employee);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            </pre>
+        </li>
+        <br><br>
+        <li>
+            Filtering by name (optional) is done in the Index view with this part:
+            <pre>
+                form method="get"
+                    input type="text" name="nameFilter" placeholder="Filter by Name" value="nameFilter"
+                    button type="submit" Filter button
+                form
+            </pre>
+        </li>
+        <br><br>
+        <li>
+            Sorting of employees by birth date is done in the controller's GET method with this configuration:
+            <pre>
+            public async Task<IActionResult> Index(string? nameFilter)
+            {
+                var employees = _context.Employees.AsQueryable();
+
+                if (!string.IsNullOrEmpty(nameFilter))
+                {
+                    employees = employees.Where(e => e.Name != null && e.Name.Contains(nameFilter));
+                }
+
+                var sortedEmployees = await employees
+                    .OrderBy(e => e.BornDate)
+                    .ToListAsync();
+
+                return View(sortedEmployees);
+            }
+            </pre>
+        </li>
+        <br><br>
+        <li>
+            The only thing I couldn't achieve was performing a registration to concretely test the uniqueness of the RFC.
+        </li>
+        <br><br>
+    </ol>
+</body>
+</html>

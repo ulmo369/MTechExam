@@ -9,7 +9,6 @@ namespace EmployeeManagement.Data
     {
         public static void Initialize(EmployeeContext context)
         {
-            // Verificar si la base de datos ya está poblada
             if (context.Employees.Any())
             {
                 return;
