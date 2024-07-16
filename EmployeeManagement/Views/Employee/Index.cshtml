@@ -1,0 +1,36 @@
+@model IEnumerable<EmployeeManagement.Controllers.Employee>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee List</title>
+</head>
+<body>
+    <h1>Employee List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Last Name</th>
+                <th>RFC</th>
+                <th>Born Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in Model)
+            {
+                <tr>
+                    <td>@employee.Id</td>
+                    <td>@employee.Name</td>
+                    <td>@employee.LastName</td>
+                    <td>@employee.RFC</td>
+                    <td>@employee.BornDate.ToShortDateString()</td>
+                    <td>@employee.Status</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>
